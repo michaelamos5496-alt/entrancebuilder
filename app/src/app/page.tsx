@@ -1,16 +1,15 @@
 import { ButtonLink } from "@/components/ui/Button";
-import { DEFAULT_CONFIG, presetConfig } from "@/domain/design/defaults";
 import { Inspiration } from "@/features/home/Inspiration";
-import { SchematicDoor } from "@/features/preview/SchematicDoor";
 
 const STEPS = [
-  { n: 1, title: "Configure the entrance of your dreams", text: "Choose layout, door, glass, colors and hardware in a few simple steps, and see it from outside and inside.", cta: { href: "/configurator", label: "START CREATING" } },
-  { n: 2, title: "Save your design", text: "Save your entrance on this device. Explore several styles and take your time to plan the perfect entrance.", cta: { href: "/designs", label: "MY DESIGNS" } },
-  { n: 3, title: "Share your entrance", text: "Your design is taking shape! Send a link to a friend, a contractor or a retailer to get feedback or a quote.", cta: { href: "/configurator?preset=grand-entry", label: "TRY AN EXAMPLE" } },
+  { n: 1, img: "/gallery/thumb-house-2.jpg", pos: "center 35%", title: "Configure the entrance of your dreams", text: "Choose layout, door, glass, colors and hardware in a few simple steps, and see it from outside and inside.", cta: { href: "/configurator", label: "START CREATING" } },
+  { n: 2, img: "/gallery/thumb-room-1.jpg", pos: "center",
+    title: "Save your design", text: "Save your entrance on this device. Explore several styles and take your time to plan the perfect entrance.", cta: { href: "/designs", label: "MY DESIGNS" } },
+  { n: 3, img: "/gallery/thumb-house-3.jpg", pos: "center 45%",
+    title: "Share your entrance", text: "Your design is taking shape! Send a link to a friend, a contractor or a retailer to get feedback or a quote.", cta: { href: "/configurator?preset=grand-entry", label: "TRY AN EXAMPLE" } },
 ];
 
 export default function HomePage() {
-  const hero = presetConfig("midnight-classic") ?? DEFAULT_CONFIG;
   return (
     <>
       <section className="bg-surface">
@@ -26,8 +25,9 @@ export default function HomePage() {
               <ButtonLink href="#inspiration" variant="secondary" size="lg">Get inspired</ButtonLink>
             </div>
           </div>
-          <div className="relative mx-auto aspect-[4/3] w-full max-w-xl overflow-hidden rounded-lg bg-[#dfe3e6] shadow-pop">
-            <SchematicDoor selections={hero} view="exterior" className="size-full" />
+          <div className="relative mx-auto aspect-[4/3] w-full max-w-xl overflow-hidden rounded-lg bg-canvas shadow-pop">
+            {/* eslint-disable-next-line @next/next/no-img-element -- static CC0 sample photo, credits in public/gallery/CREDITS.md */}
+            <img src="/gallery/house-1.jpg" alt="A white clapboard house with a covered front door" width={1200} height={904} fetchPriority="high" className="size-full object-cover" />
           </div>
         </div>
       </section>
@@ -36,11 +36,15 @@ export default function HomePage() {
         <h2 id="how" className="text-3xl font-black tracking-tight">How it works?</h2>
         <ol className="mt-8 grid gap-5 md:grid-cols-3">
           {STEPS.map((s) => (
-            <li key={s.n} className="flex flex-col rounded-lg bg-surface p-6 shadow-card">
+            <li key={s.n} className="flex flex-col overflow-hidden rounded-lg bg-surface shadow-card">
+              {/* eslint-disable-next-line @next/next/no-img-element -- static CC0 sample photo */}
+              <img src={s.img} alt="" loading="lazy" width={640} height={320} className="h-40 w-full object-cover" style={{ objectPosition: s.pos }} />
+              <div className="flex flex-1 flex-col p-6">
               <span className="grid size-10 place-items-center rounded-full bg-brand text-lg font-black text-white">{s.n}</span>
               <h3 className="mt-4 text-xl font-bold">{s.title}</h3>
               <p className="mt-2 flex-1 text-muted">{s.text}</p>
               <ButtonLink href={s.cta.href} variant="secondary" className="mt-6 self-start">{s.cta.label}</ButtonLink>
+              </div>
             </li>
           ))}
         </ol>

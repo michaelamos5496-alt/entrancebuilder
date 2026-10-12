@@ -281,7 +281,7 @@ Phase 2 asked to match **verified reference measurements** from screenshots/reco
 | My designs | `features/designs/DesignsList.tsx`, `services/designRepository.ts` | List, edit, rename, duplicate, copy share link, delete with confirm; unique names; loading / empty / error states. |
 | Home | `app/page.tsx`, `features/home/Inspiration.tsx` | Hero, how-it-works, inspiration grid with filters and "See more". |
 | Legal | `app/legal/[doc]` | **Placeholder copy**, labelled as such. |
-| Original gallery art | `public/gallery/*.svg` | Created for this project; no third-party licence. |
+| Sample gallery photos | `public/gallery/*.jpg` | CC0 (Wikimedia Commons); credits in `public/gallery/CREDITS.md`. |
 
 ### Integration points for later phases (kept thin on purpose)
 - `features/preview/SchematicDoor.tsx` — `DoorPreviewProps` contract + flat 2D **stand-in**. Phase 4 replaces the renderer. Not final visual quality.

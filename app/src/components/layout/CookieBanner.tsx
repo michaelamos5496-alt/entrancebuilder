@@ -49,7 +49,7 @@ export function CookieBanner() {
         <Link href="/legal/privacy" className="underline">Privacy policy</Link>
       </p>
       <div className="mt-3 flex flex-wrap gap-1.5">
-        <Button size="sm" className="bg-white text-ink hover:bg-white/90" onClick={() => choose("all")}>Accept all</Button>
+        <Button size="sm" variant="secondary" className="border-transparent" onClick={() => choose("all")}>Accept all</Button>
         <Button size="sm" variant="ghost" className="text-white hover:bg-white/10" onClick={() => choose("none")}>Reject all</Button>
         <Button size="sm" variant="ghost" className="text-white hover:bg-white/10" onClick={() => choose("dismissed")}>Got it</Button>
       </div>

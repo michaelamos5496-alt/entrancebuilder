@@ -2,7 +2,7 @@ import { getAsset } from "@/domain/catalogue/assets";
 import type { ViewSide } from "@/domain/design/types";
 
 /**
- * Placeholder gallery: original illustrations created for this project (no third-party licence).
+ * Sample gallery: CC0 photographs from Wikimedia Commons (see public/gallery/CREDITS.md).
  * INTEGRATION POINT: Phase 5/6 loads real gallery photos (with stored default placements) from the database.
  */
 export interface GalleryPhoto {
@@ -21,9 +21,9 @@ const photo = (id: string, label: string, view: ViewSide): GalleryPhoto => {
 };
 
 export const GALLERY: readonly GalleryPhoto[] = [
-  photo("house-1", "Gray siding", "exterior"),
+  photo("house-1", "White clapboard", "exterior"),
   photo("house-2", "Red brick", "exterior"),
-  photo("house-3", "Craftsman stucco", "exterior"),
+  photo("house-3", "Yellow stucco", "exterior"),
   photo("room-1", "Living room", "interior"),
 ];
 

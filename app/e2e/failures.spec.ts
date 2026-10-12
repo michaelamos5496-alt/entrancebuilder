@@ -59,11 +59,11 @@ test.describe("invalid uploads never trap the user", () => {
 
 test.describe("failed network requests", () => {
   test("a sample photo that fails to load shows an error and the user can pick another", async ({ page }) => {
-    await page.route("**/gallery/house-1.svg", (r) => r.abort("connectionfailed"));
+    await page.route("**/gallery/house-1.jpg", (r) => r.abort("connectionfailed"));
     await openConfigurator(page);
     await page.getByRole("radio", { name: "House" }).click();
     await page.getByRole("button", { name: "Choose a photo" }).click();
-    await page.getByRole("dialog").getByRole("button", { name: /Gray siding/ }).click();
+    await page.getByRole("dialog").getByRole("button", { name: /White clapboard/ }).click();
     await expect(dialogAlert(page)).toContainText(/couldn.t be loaded/);
     await expect(page.getByRole("dialog").getByRole("button", { name: /Red brick/ })).toBeEnabled();
     await page.getByRole("dialog").getByRole("button", { name: /Red brick/ }).click();

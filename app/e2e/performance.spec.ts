@@ -28,11 +28,19 @@ test.describe("payload", () => {
     });
   }
 
-  test("images are not oversized: the page loads no raster images beyond the user's own", async ({ page }) => {
-    const images: string[] = [];
-    page.on("response", (r) => { if (r.request().resourceType() === "image") images.push(r.url()); });
+  test("images stay within budget: only sample-gallery JPEGs, each under 500 KB, 1.2 MB in total", async ({ page }) => {
+    const images = new Map<string, number>();
+    page.on("response", async (r) => {
+      if (r.request().resourceType() !== "image") return;
+      images.set(new URL(r.url()).pathname, (await r.body().catch(() => Buffer.alloc(0))).length);
+    });
     await page.goto("/", { waitUntil: "networkidle" });
-    expect(images).toEqual([]); // the home page draws its doors as inline SVG: no image requests
+    for (const [path, bytes] of images) {
+      expect(path, "only the CC0 sample gallery may be loaded as a raster image").toMatch(/^\/gallery\/[\w-]+\.jpg$/);
+      expect(bytes / 1024, `${path} is too heavy`).toBeLessThan(500);
+    }
+    const total = [...images.values()].reduce((a, b) => a + b, 0) / 1024;
+    expect(total, "home-page image weight").toBeLessThan(1200); // hero + three small step thumbnails
   });
 });
 
