@@ -97,7 +97,7 @@ export function OptionThumb({ group, value }: { group: SelectionKey; value: stri
       body = door();
   }
   return (
-    <svg viewBox="0 0 72 60" className="h-14 w-full" aria-hidden focusable="false">
+    <svg viewBox="0 0 72 60" className="h-16 w-full" aria-hidden focusable="false">
       {body}
     </svg>
   );

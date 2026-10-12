@@ -36,11 +36,10 @@ function useGridKeys(columns: number) {
 }
 
 export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }: CommonProps) {
-  const cols = group.columns ?? 3;
-  const { refs, onKeyDown } = useGridKeys(cols);
+  const { refs, onKeyDown } = useGridKeys(2);
   const value = selections[group.key] as string;
   return (
-    <div role="radiogroup" aria-label={group.title} className={cn("grid gap-2", cols === 2 ? "grid-cols-2" : "grid-cols-3")}>
+    <div role="radiogroup" aria-label={group.title} className="grid grid-cols-2 border-l border-t border-line">
       {group.options?.map((o, i) => {
         const st = evaluation.options[group.key]?.[o.value] ?? { available: false };
         const off = disabled || !st.available;
@@ -57,11 +56,12 @@ export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }
             onClick={() => { if (!off) onSelect(group.key, o.value as never); }}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "group flex flex-col items-center gap-1.5 rounded-md border-2 bg-surface px-2 pb-2.5 pt-2 text-center text-xs font-medium leading-tight transition",
-              sel ? "border-ink text-ink shadow-card" : "border-transparent bg-canvas text-muted hover:border-line hover:text-ink",
+              "group relative flex min-h-[132px] flex-col items-center justify-center gap-2 border-b border-r border-line bg-surface px-2 pb-3 pt-3 text-center text-xs font-medium leading-tight text-ink transition",
+              sel ? "z-[1] outline outline-[3px] -outline-offset-[3px] outline-slate" : "text-muted hover:bg-canvas hover:text-ink",
               off && "cursor-not-allowed opacity-45",
             )}
           >
+            {sel && <span aria-hidden className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-slate text-white"><Icon name="check" size={12} /></span>}
             <OptionThumb group={group.key} value={o.value} />
             <span>{o.label}</span>
             {!st.available && <span className="text-[10px] font-normal text-muted">{st.reason}</span>}

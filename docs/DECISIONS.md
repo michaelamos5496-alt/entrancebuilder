@@ -47,3 +47,7 @@
 | D-43 | Logging is structured JSON to stdout with redaction; no third-party monitoring integrated | Accepted | No account to integrate with; forward path documented. |
 | D-44 | CSP keeps `script-src 'unsafe-inline'` for now | Accepted (known gap) | Nonce setup deferred; documented as hardening backlog. |
 | D-45 | Playwright on installed Chrome for committed e2e tests | Accepted | No browser download; matches earlier manual runs. |
+
+## D-46 Layout aligned to the reference (2026-10-12)
+**Decision:** adopt the reference's information layout: full-width step bar under the header, options panel on the left (two-column bordered tiles with a tick badge), canvas on the right with floating tools, split hero on the home page. **Why:** the user asked for an interface "easier and closer" to the reference, and a render of the reference's home page and first configurator step finally became available (REFERENCE_AUDIT §8a). **Boundaries:** layout and interaction only; colours of our own palette except a generic slate and mint, our own logo, line-art icons and photos (CC0). No Novatech assets, text or code.
+

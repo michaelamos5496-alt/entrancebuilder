@@ -20,41 +20,39 @@ import { restorePhotos } from "@/services/persistence/restore";
 import { DoorSvgSource } from "./DoorSvgSource";
 import { useToast } from "@/components/ui/Toast";
 
-function StepNav() {
+function StepNav({ className }: { className?: string }) {
   const c = useConfigurator();
   return (
-    <nav aria-label="Configuration steps" className="border-b border-line bg-surface">
+    <nav aria-label="Configuration steps" className={cn("bg-slate", className)}>
       <ol className="flex">
         {STEPS.map((s, i) => {
           const current = i === c.step;
+          const done = i < c.step;
           return (
-            <li key={s.id} className="min-w-0 flex-1">
+            <li key={s.id} className={cn("min-w-0 flex-1 border-r border-white/10 last:border-r-0", current && "flex-[1.6] sm:flex-1")}>
               <button
                 type="button"
                 aria-current={current ? "step" : undefined}
                 onClick={() => c.goStep(i)}
                 className={cn(
-                  "flex w-full flex-col items-center gap-1 px-1 pb-2.5 pt-3 text-[11px] font-bold transition-colors sm:text-xs",
-                  current ? "text-ink" : "text-muted hover:text-ink",
+                  "flex h-12 w-full items-center justify-center gap-2 px-2 text-sm font-bold transition-colors sm:justify-start sm:px-4",
+                  current ? "bg-mint text-ink" : "text-white/85 hover:bg-white/10 hover:text-white",
                 )}
               >
                 <span
                   className={cn(
-                    "grid size-7 place-items-center rounded-full text-xs transition-colors",
-                    current ? "bg-brand text-white" : i < c.step ? "bg-ink text-white" : "bg-canvas",
+                    "grid size-6 shrink-0 place-items-center rounded-full text-xs",
+                    current ? "bg-slate text-white" : done ? "bg-mint text-ink" : "bg-white/25 text-white",
                   )}
                 >
-                  {i < c.step ? <Icon name="check" size={14} /> : i + 1}
+                  {done ? <Icon name="check" size={14} /> : i + 1}
                 </span>
-                <span className="truncate">{s.title}</span>
+                <span className={cn("truncate", !current && "max-sm:sr-only")}>{s.title}</span>
               </button>
             </li>
           );
         })}
       </ol>
-      <div className="h-0.5 bg-line" aria-hidden>
-        <div className="h-full bg-brand transition-all duration-300" style={{ width: `${((c.step + 1) / STEPS.length) * 100}%` }} />
-      </div>
     </nav>
   );
 }
@@ -112,11 +110,11 @@ function Shell() {
   return (
     <>
       <h1 className="sr-only">Create a door</h1>
-      <div className="no-print flex flex-col lg:h-[calc(100svh-var(--header-h))] lg:flex-row">
-        <PreviewWorkspace className={cn("sticky top-[var(--header-h)] z-10 min-h-[320px] shrink-0 lg:relative lg:top-0 lg:h-auto lg:min-h-0 lg:flex-1", c.mode === "house" && c.photos[c.view] ? "h-[52svh]" : "h-[46svh]")} />
+      <div className="no-print flex flex-col lg:grid lg:h-[calc(100svh-var(--header-h))] lg:grid-cols-[minmax(360px,480px)_1fr] lg:grid-rows-[auto_minmax(0,1fr)]">
+        <StepNav className="lg:col-span-2" />
+        <PreviewWorkspace className={cn("sticky top-[var(--header-h)] z-10 order-first min-h-[320px] shrink-0 lg:relative lg:top-0 lg:order-none lg:col-start-2 lg:row-start-2 lg:h-auto lg:min-h-0", c.mode === "house" && c.photos[c.view] ? "h-[52svh]" : "h-[46svh]")} />
 
-        <aside aria-label="Configuration" className="flex min-h-0 flex-1 flex-col bg-surface lg:w-[460px] lg:flex-none lg:border-l lg:border-line">
-          <StepNav />
+        <aside aria-label="Configuration" className="flex min-h-0 flex-1 flex-col bg-surface lg:col-start-1 lg:row-start-2 lg:border-r lg:border-line">
           <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-28 pt-4 lg:pb-6">
             {!c.ready ? (
               <div className="space-y-4 pt-4">

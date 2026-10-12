@@ -21,6 +21,8 @@ export function Logo({ className }: { className?: string }) {
         <circle cx="16.8" cy="14.5" r="1.1" fill="var(--color-brand)" />
       </svg>
       Threshold
+      <span aria-hidden className="hidden h-5 w-px bg-line sm:block" />
+      <span className="hidden text-xs font-bold uppercase tracking-[0.18em] text-ink/80 sm:block">Entrance builder</span>
     </Link>
   );
 }
@@ -33,7 +35,7 @@ export function SiteHeader() {
 
   return (
     <header className="no-print sticky top-0 z-40 h-[var(--header-h)] border-b border-line bg-surface">
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6">
+      <div className="flex h-full items-center justify-between px-4 sm:px-6">
         <Logo />
         <nav aria-label="Main" className="hidden items-center gap-1 sm:flex">
           {NAV.map((n) => (
@@ -42,7 +44,7 @@ export function SiteHeader() {
               href={n.href}
               aria-current={path.startsWith(n.href) ? "page" : undefined}
               className={cn(
-                "rounded-md px-4 py-2 text-sm font-bold transition-colors hover:bg-canvas",
+                "px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:bg-canvas",
                 path.startsWith(n.href) ? "text-brand" : "text-ink",
               )}
             >

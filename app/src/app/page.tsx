@@ -12,23 +12,22 @@ const STEPS = [
 export default function HomePage() {
   return (
     <>
-      <section className="bg-surface">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:py-20">
-          <div className="anim-rise">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-brand">Entrance builder</p>
-            <h1 className="mt-3 text-5xl font-black leading-[1.05] tracking-tight sm:text-6xl">Create your door</h1>
-            <p className="mt-5 max-w-lg text-lg text-muted">
-              Transform the facade of your home. Build the door of your dreams in a few simple steps, see it from every side, and check how it looks on your own house.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/configurator" size="lg">START CREATING</ButtonLink>
-              <ButtonLink href="#inspiration" variant="secondary" size="lg">Get inspired</ButtonLink>
-            </div>
+      <section className="grid lg:min-h-[calc(100svh-var(--header-h)-72px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+        <div className="anim-rise flex flex-col justify-center bg-warm px-6 py-14 sm:px-12 lg:px-20 lg:py-20">
+          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">Create your door</h1>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-ink/85">
+            Transform the facade of your home. Build the door of your dreams in a few simple steps, see it from every angle, and check how it looks on a photo of your own house.
+          </p>
+          <div className="mt-8">
+            <ButtonLink href="/configurator" variant="secondary" size="lg" className="w-full max-w-md justify-start rounded-none border-ink! bg-transparent px-5 tracking-[0.14em] hover:bg-ink hover:text-white sm:w-[26rem]">
+              <svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M1 9h23M16 1.5 24 9l-8 7.5" /></svg>
+              START CREATING
+            </ButtonLink>
           </div>
-          <div className="relative mx-auto aspect-[4/3] w-full max-w-xl overflow-hidden rounded-lg bg-canvas shadow-pop">
-            {/* eslint-disable-next-line @next/next/no-img-element -- static CC0 sample photo, credits in public/gallery/CREDITS.md */}
-            <img src="/gallery/house-1.jpg" alt="A white clapboard house with a covered front door" width={1200} height={904} fetchPriority="high" className="size-full object-cover" />
-          </div>
+        </div>
+        <div className="relative min-h-[300px] bg-canvas">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static CC0 sample photo, credits in public/gallery/CREDITS.md */}
+          <img src="/gallery/house-1.jpg" alt="A white clapboard house with a covered front door" width={1200} height={904} fetchPriority="high" className="absolute inset-0 size-full object-cover" />
         </div>
       </section>
 

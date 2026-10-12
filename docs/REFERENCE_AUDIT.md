@@ -85,6 +85,17 @@ Other verified behaviours:
 
 Everything visual is unverified: grid, header/step-bar layout, typography (Roboto 400/700/900 is requested in the HTML — V), colour palette, card styles, transitions, 3D camera behaviour (orbit?), loading states, mobile layout. The only verified visual facts: Roboto font, a dark slate nav bar and dark footer (seen in the partial render), a blurred exterior/interior background image pair, a house gallery image, and "how-to" images on the home page.
 
+### 8a. Observed 2026-10-12 (V, desktop 1440×900 render; phone and later steps still unobserved)
+
+A second headless render (SwiftShader WebGL, 35 s wait) succeeded for the home page and the configurator's first step.
+
+- **Header:** full-width white bar, logo + "Entrance builder" on the left, small letter-spaced uppercase links (Create a door, Login, FR) on the right.
+- **Home hero:** two columns. Warm off-white text panel (~35 %) with "Create your door", a paragraph and an outlined, square-cornered "→ START CREATING" button; a full-bleed photograph fills the rest.
+- **Configurator:** a full-width slate step bar (numbered circles, mint highlight on the active step, Summary last) sits under the header. Below it, a ~480 px left panel (step title with back/next arrows, rounded search field, two-column grid of square bordered option tiles with a tick badge on the selected one) and a large light-grey canvas on the right with a mint dismissible welcome banner and a vertical stack of white square tool buttons (home, flip, rotate, zoom). A slate footer bar carries the copyright.
+- Still unobserved: steps 2–5 and Summary, the house-preview step, modals, projects, phone layout.
+
+Our UI follows this layout with original branding, icons and assets (see DECISIONS D-46).
+
 ## 9. Material we need from the user to finish the audit
 
 1. Screenshots (desktop 1440 px and phone 390 px) of: home (full scroll), configurator on each of the 5 steps, house-preview step with each of the 3 photo sources, interior preview, summary, save modal, share modal, projects list, project details, PDF output.

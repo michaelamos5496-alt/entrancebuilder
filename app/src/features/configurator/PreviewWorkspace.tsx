@@ -22,7 +22,7 @@ export function PreviewWorkspace({ className }: { className?: string }) {
     <section
       id="preview-stage"
       aria-label="Door preview"
-      className={cn("relative isolate overflow-hidden", c.view === "exterior" ? "bg-[#dfe3e6]" : "bg-[#eee8dc]", className)}
+      className={cn("relative isolate overflow-hidden", c.view === "exterior" ? "bg-stage" : "bg-[#eee8dc]", className)}
     >
       {!c.ready ? (
         <Skeleton className="absolute inset-0 rounded-none" />
@@ -61,11 +61,12 @@ export function PreviewWorkspace({ className }: { className?: string }) {
             onChange={c.setView}
             items={[{ value: "exterior", label: "Outside" }, { value: "interior", label: "Inside" }]}
           />
-          <div className="hidden items-center rounded-full bg-surface p-0.5 shadow-card sm:flex">
-            <Tooltip text="Undo" side="bottom"><IconButton label="Undo" onClick={c.undo} disabled={!c.canUndo} className="rounded-full"><Icon name="undo" /></IconButton></Tooltip>
-            <Tooltip text="Redo" side="bottom"><IconButton label="Redo" onClick={c.redo} disabled={!c.canRedo} className="rounded-full"><Icon name="redo" /></IconButton></Tooltip>
-          </div>
         </div>
+      </div>
+
+      <div className="absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 flex-col gap-3 sm:flex sm:right-4">
+        <Tooltip text="Undo" side="left"><IconButton label="Undo" onClick={c.undo} disabled={!c.canUndo} className="size-14 rounded-md bg-surface shadow-card"><Icon name="undo" size={26} /></IconButton></Tooltip>
+        <Tooltip text="Redo" side="left"><IconButton label="Redo" onClick={c.redo} disabled={!c.canRedo} className="size-14 rounded-md bg-surface shadow-card"><Icon name="redo" size={26} /></IconButton></Tooltip>
       </div>
 
       {c.mode === "door" && c.ready && (
