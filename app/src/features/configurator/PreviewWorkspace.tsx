@@ -22,7 +22,7 @@ export function PreviewWorkspace({ className }: { className?: string }) {
     <section
       id="preview-stage"
       aria-label="Door preview"
-      className={cn("relative isolate overflow-hidden", c.view === "exterior" ? "bg-stage" : "bg-[#eee8dc]", className)}
+      className={cn("relative isolate overflow-hidden", c.view === "exterior" ? "bg-gradient-to-b from-[#e7ecf5] to-[#d9dee8]" : "bg-gradient-to-b from-[#f1ebe0] to-[#e4dccd]", className)}
     >
       {!c.ready ? (
         <Skeleton className="absolute inset-0 rounded-none" />
@@ -30,7 +30,7 @@ export function PreviewWorkspace({ className }: { className?: string }) {
         <>
           {c.mode === "door" && (
             <>
-              <div aria-hidden className={cn("absolute inset-x-0 bottom-0 h-[9%] min-h-9", c.view === "exterior" ? "bg-[#b9bbb9]" : "bg-[#a98a63]")} />
+              <div aria-hidden className={cn("absolute inset-x-0 bottom-0 h-[9%] min-h-9", c.view === "exterior" ? "bg-gradient-to-b from-[#cfd2d8] to-[#b6bac3]" : "bg-gradient-to-b from-[#b89a73] to-[#a58762]")} />
               <div className="absolute inset-x-0 bottom-[9%] top-20 grid place-items-center px-6 max-lg:bottom-9">
                 <SchematicDoor selections={c.selections} view={c.view} className="h-full w-full max-w-[560px]" />
               </div>
@@ -64,13 +64,13 @@ export function PreviewWorkspace({ className }: { className?: string }) {
         </div>
       </div>
 
-      <div className="absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 flex-col gap-3 sm:flex sm:right-4">
-        <Tooltip text="Undo" side="left"><IconButton label="Undo" onClick={c.undo} disabled={!c.canUndo} className="size-14 rounded-md bg-surface shadow-card"><Icon name="undo" size={26} /></IconButton></Tooltip>
-        <Tooltip text="Redo" side="left"><IconButton label="Redo" onClick={c.redo} disabled={!c.canRedo} className="size-14 rounded-md bg-surface shadow-card"><Icon name="redo" size={26} /></IconButton></Tooltip>
+      <div className="absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 flex-col gap-2.5 sm:flex sm:right-4">
+        <Tooltip text="Undo" side="left"><IconButton label="Undo" onClick={c.undo} disabled={!c.canUndo} className="glass size-12 rounded-full"><Icon name="undo" size={22} /></IconButton></Tooltip>
+        <Tooltip text="Redo" side="left"><IconButton label="Redo" onClick={c.redo} disabled={!c.canRedo} className="glass size-12 rounded-full"><Icon name="redo" size={22} /></IconButton></Tooltip>
       </div>
 
       {c.mode === "door" && c.ready && (
-        <p className="absolute bottom-2 left-0 right-0 z-10 px-4 text-center text-[11px] font-semibold text-ink">
+        <p className="absolute bottom-3 left-0 right-0 z-10 px-4 text-center text-[11px] font-medium text-ink/70">
           Schematic preview — realistic rendering arrives in a later phase.
         </p>
       )}
@@ -88,7 +88,7 @@ export function PreviewWorkspace({ className }: { className?: string }) {
 
 function HouseEmpty({ view, onChoose }: { view: "exterior" | "interior"; onChoose: () => void }) {
   return (
-    <div className="grid max-w-sm place-items-center gap-3 rounded-lg bg-surface/90 px-8 py-10 text-center shadow-card backdrop-blur">
+    <div className="grid max-w-sm place-items-center gap-3 glass-strong rounded-[28px] px-8 py-10 text-center">
       <span className="grid size-14 place-items-center rounded-full bg-canvas"><Icon name="home" size={28} /></span>
       <h3 className="text-lg font-bold">See it on your {view === "exterior" ? "home" : "room"}</h3>
       <p className="text-sm text-muted">Choose a sample photo or upload your own, then drag the door into place.</p>

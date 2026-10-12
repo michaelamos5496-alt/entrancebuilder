@@ -39,7 +39,7 @@ export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }
   const { refs, onKeyDown } = useGridKeys(2);
   const value = selections[group.key] as string;
   return (
-    <div role="radiogroup" aria-label={group.title} className="grid grid-cols-2 border-l border-t border-line">
+    <div role="radiogroup" aria-label={group.title} className="grid grid-cols-2 gap-3">
       {group.options?.map((o, i) => {
         const st = evaluation.options[group.key]?.[o.value] ?? { available: false };
         const off = disabled || !st.available;
@@ -56,12 +56,12 @@ export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }
             onClick={() => { if (!off) onSelect(group.key, o.value as never); }}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "group relative flex min-h-[132px] flex-col items-center justify-center gap-2 border-b border-r border-line bg-surface px-2 pb-3 pt-3 text-center text-xs font-medium leading-tight text-ink transition",
-              sel ? "z-[1] outline outline-[3px] -outline-offset-[3px] outline-slate" : "text-muted hover:bg-canvas hover:text-ink",
+              "group relative flex min-h-[128px] flex-col items-center justify-center gap-2 rounded-3xl border px-2 pb-3 pt-3 text-center text-xs font-medium leading-tight transition duration-200",
+              sel ? "border-accent bg-white text-ink shadow-[0_0_0_3px_rgb(10_98_208/0.22),0_14px_30px_-14px_rgb(10_98_208/0.55)]" : "border-black/[0.06] bg-white/55 text-muted hover:-translate-y-0.5 hover:bg-white hover:text-ink hover:shadow-card",
               off && "cursor-not-allowed opacity-45",
             )}
           >
-            {sel && <span aria-hidden className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-slate text-white"><Icon name="check" size={12} /></span>}
+            {sel && <span aria-hidden className="absolute right-2.5 top-2.5 grid size-5 place-items-center rounded-full bg-accent text-white"><Icon name="check" size={12} /></span>}
             <OptionThumb group={group.key} value={o.value} />
             <span>{o.label}</span>
             {!st.available && <span className="text-[10px] font-normal text-muted">{st.reason}</span>}

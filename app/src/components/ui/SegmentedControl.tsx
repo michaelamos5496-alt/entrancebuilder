@@ -26,7 +26,7 @@ export function SegmentedControl<T extends string>({
   }
 
   return (
-    <div role="radiogroup" aria-label={label} className={cn("inline-flex rounded-full bg-surface p-1 shadow-card", className)}>
+    <div role="radiogroup" aria-label={label} className={cn("glass inline-flex rounded-full p-1", className)}>
       {items.map((it, i) => {
         const checked = it.value === value;
         return (
@@ -42,8 +42,8 @@ export function SegmentedControl<T extends string>({
             onClick={() => onChange(it.value)}
             onKeyDown={(e) => onKey(e, i)}
             className={cn(
-              "rounded-full px-3 py-1.5 text-sm font-bold transition-colors disabled:opacity-40 sm:px-4 sm:py-2",
-              checked ? "bg-ink text-white" : "text-muted hover:text-ink",
+              "rounded-full px-3 py-1.5 text-sm font-semibold tracking-tight transition-colors disabled:opacity-40 sm:px-4 sm:py-2",
+              checked ? "bg-slate text-white shadow-[0_6px_14px_-6px_rgb(0_0_0/0.6)]" : "text-ink/65 hover:text-ink",
             )}
           >
             {it.label}

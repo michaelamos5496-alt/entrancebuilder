@@ -23,26 +23,26 @@ import { useToast } from "@/components/ui/Toast";
 function StepNav({ className }: { className?: string }) {
   const c = useConfigurator();
   return (
-    <nav aria-label="Configuration steps" className={cn("bg-slate", className)}>
-      <ol className="flex">
+    <nav aria-label="Configuration steps" className={cn("glass mx-3 mt-3 rounded-full p-1.5 lg:mx-auto lg:mt-0 lg:w-full lg:max-w-3xl", className)}>
+      <ol className="flex gap-1">
         {STEPS.map((s, i) => {
           const current = i === c.step;
           const done = i < c.step;
           return (
-            <li key={s.id} className={cn("min-w-0 flex-1 border-r border-white/10 last:border-r-0", current && "flex-[1.6] sm:flex-1")}>
+            <li key={s.id} className={cn("min-w-0 flex-1", current && "max-sm:flex-[2.2]")}>
               <button
                 type="button"
                 aria-current={current ? "step" : undefined}
                 onClick={() => c.goStep(i)}
                 className={cn(
-                  "flex h-12 w-full items-center justify-center gap-2 px-2 text-sm font-bold transition-colors sm:justify-start sm:px-4",
-                  current ? "bg-mint text-ink" : "text-white/85 hover:bg-white/10 hover:text-white",
+                  "flex h-10 w-full items-center justify-center gap-2 rounded-full px-2 text-sm font-semibold tracking-tight transition-all sm:px-3",
+                  current ? "bg-slate text-white shadow-[0_6px_16px_-6px_rgb(0_0_0/0.6)]" : "text-ink/70 hover:bg-black/5 hover:text-ink",
                 )}
               >
                 <span
                   className={cn(
                     "grid size-6 shrink-0 place-items-center rounded-full text-xs",
-                    current ? "bg-slate text-white" : done ? "bg-mint text-ink" : "bg-white/25 text-white",
+                    current ? "bg-white/20 text-white" : done ? "bg-accent text-white" : "bg-black/[0.07] text-ink/70",
                   )}
                 >
                   {done ? <Icon name="check" size={14} /> : i + 1}
@@ -110,11 +110,11 @@ function Shell() {
   return (
     <>
       <h1 className="sr-only">Create a door</h1>
-      <div className="no-print flex flex-col lg:grid lg:h-[calc(100svh-var(--header-h))] lg:grid-cols-[minmax(360px,480px)_1fr] lg:grid-rows-[auto_minmax(0,1fr)]">
+      <div className="no-print flex flex-col lg:grid lg:h-[calc(100svh-var(--header-h))] lg:grid-cols-[minmax(360px,440px)_1fr] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-4 lg:px-4 lg:pb-4">
         <StepNav className="lg:col-span-2" />
-        <PreviewWorkspace className={cn("sticky top-[var(--header-h)] z-10 order-first min-h-[320px] shrink-0 lg:relative lg:top-0 lg:order-none lg:col-start-2 lg:row-start-2 lg:h-auto lg:min-h-0", c.mode === "house" && c.photos[c.view] ? "h-[52svh]" : "h-[46svh]")} />
+        <PreviewWorkspace className={cn("sticky top-[var(--header-h)] z-10 order-first min-h-[320px] shrink-0 lg:relative lg:top-0 lg:order-none lg:col-start-2 lg:row-start-2 lg:h-auto lg:min-h-0 lg:rounded-[28px] lg:border lg:border-white/70 lg:shadow-[var(--shadow-glass)]", c.mode === "house" && c.photos[c.view] ? "h-[52svh]" : "h-[46svh]")} />
 
-        <aside aria-label="Configuration" className="flex min-h-0 flex-1 flex-col bg-surface lg:col-start-1 lg:row-start-2 lg:border-r lg:border-line">
+        <aside aria-label="Configuration" className="glass-strong mx-3 mt-3 flex min-h-0 flex-1 flex-col overflow-hidden rounded-[28px] lg:col-start-1 lg:row-start-2 lg:m-0">
           <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-28 pt-4 lg:pb-6">
             {!c.ready ? (
               <div className="space-y-4 pt-4">
@@ -129,7 +129,7 @@ function Shell() {
             )}
           </div>
 
-          <div className="fixed inset-x-0 bottom-0 z-20 flex items-center gap-2 border-t border-line bg-surface/95 px-4 py-3 backdrop-blur lg:static lg:bg-surface">
+          <div className="glass-strong fixed inset-x-3 bottom-3 z-20 flex items-center gap-2 rounded-full px-3 py-2 lg:static lg:rounded-none lg:border-x-0 lg:border-b-0 lg:border-t-black/5 lg:bg-transparent lg:px-4 lg:py-3 lg:shadow-none lg:backdrop-blur-0">
             <div className="flex items-center sm:hidden">
               <Tooltip text="Undo"><IconButton label="Undo" onClick={c.undo} disabled={!c.canUndo}><Icon name="undo" /></IconButton></Tooltip>
               <Tooltip text="Redo"><IconButton label="Redo" onClick={c.redo} disabled={!c.canRedo}><Icon name="redo" /></IconButton></Tooltip>

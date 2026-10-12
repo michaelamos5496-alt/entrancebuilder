@@ -33,7 +33,7 @@ export function Inspiration() {
             onClick={() => { setFilter(f.id); setShown(PAGE); }}
             className={cn(
               "rounded-full px-5 py-2.5 text-sm font-bold transition-colors",
-              filter === f.id ? "bg-ink text-white" : "bg-surface text-ink shadow-card hover:bg-ink/5",
+              filter === f.id ? "bg-slate text-white" : "glass text-ink hover:bg-white",
             )}
           >
             {f.label}
@@ -51,7 +51,7 @@ export function Inspiration() {
               <li key={p.slug} className="anim-rise">
                 <Link
                   href={`/configurator?preset=${p.slug}`}
-                  className="group block overflow-hidden rounded-lg bg-surface shadow-card transition-shadow hover:shadow-pop"
+                  className="group block overflow-hidden rounded-[28px] glass transition-shadow hover:shadow-pop"
                 >
                   <div className="aspect-[4/3] overflow-hidden bg-[#dfe3e6]">
                     <SchematicDoor

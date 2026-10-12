@@ -41,7 +41,7 @@ export function CookieBanner() {
   return (
     <section
       aria-label="Cookie consent"
-      className="no-print anim-rise fixed bottom-3 left-3 z-50 w-[min(20rem,calc(100vw-1.5rem))] rounded-lg bg-ink p-4 text-white shadow-pop max-lg:bottom-24"
+      className="no-print anim-rise fixed bottom-3 left-3 z-50 w-[min(20rem,calc(100vw-1.5rem))] glass-dark rounded-3xl p-4 max-lg:bottom-24"
     >
       <h2 className="text-sm font-bold">Cookies</h2>
       <p className="mt-1 text-xs leading-relaxed text-white/80">

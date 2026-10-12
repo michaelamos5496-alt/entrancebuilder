@@ -45,9 +45,9 @@ export function Modal({ open, onClose, title, description, children, footer, var
         if (e.target === ref.current) onClose();
       }}
       className={cn(
-        "m-auto w-[min(520px,calc(100vw-24px))] max-h-[min(88svh,760px)] overflow-hidden rounded-lg bg-surface p-0 text-ink shadow-pop",
+        "m-auto w-[min(520px,calc(100vw-24px))] max-h-[min(88svh,760px)] glass-strong overflow-hidden rounded-[28px] p-0 text-ink shadow-pop",
         "open:flex open:flex-col",
-        variant === "sheet" && "max-sm:m-0 max-sm:mt-auto max-sm:w-full max-sm:max-w-none max-sm:rounded-b-none max-sm:anim-sheet",
+        variant === "sheet" && "max-sm:m-0 max-sm:mt-auto max-sm:w-full max-sm:max-w-none max-sm:rounded-b-none max-sm:rounded-t-[28px] max-sm:anim-sheet",
       )}
     >
       {open && (
@@ -61,7 +61,7 @@ export function Modal({ open, onClose, title, description, children, footer, var
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="-mr-2 -mt-1 grid size-10 shrink-0 place-items-center rounded-md hover:bg-ink/8"
+              className="-mr-2 -mt-1 grid size-10 shrink-0 place-items-center rounded-full hover:bg-black/8"
             >
               <Icon name="close" />
             </button>

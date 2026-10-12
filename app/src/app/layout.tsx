@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { ErrorReporter } from "@/components/layout/ErrorReporter";
@@ -7,10 +7,9 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { ToastProvider } from "@/components/ui/Toast";
 
-const roboto = Roboto({
-  variable: "--font-roboto",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
   display: "swap",
 });
 
@@ -19,11 +18,11 @@ export const metadata: Metadata = {
   description: "Design your entrance door in a few steps and see it on your own home.",
 };
 
-export const viewport: Viewport = { themeColor: "#ffffff", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#eef0f4", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={roboto.variable}>
+    <html lang="en" className={inter.variable}>
       <body className="flex min-h-svh flex-col">
         <a
           href="#main"

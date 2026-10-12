@@ -6,9 +6,9 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 const VARIANT: Record<Variant, string> = {
-  primary: "bg-brand text-white hover:bg-brand-strong",
-  secondary: "bg-surface text-ink border border-line hover:border-ink",
-  ghost: "text-ink hover:bg-ink/5",
+  primary: "bg-brand text-white shadow-[0_8px_20px_-8px_rgb(0_0_0/0.55),inset_0_1px_0_rgb(255_255_255/0.18)] hover:bg-brand-strong",
+  secondary: "bg-white/70 text-ink border border-black/10 backdrop-blur hover:bg-white hover:border-black/25",
+  ghost: "text-ink hover:bg-black/5",
   danger: "bg-danger text-white hover:brightness-90",
 };
 const SIZE: Record<Size, string> = {
@@ -19,7 +19,7 @@ const SIZE: Record<Size, string> = {
 
 export function buttonClass(variant: Variant = "primary", size: Size = "md", extra?: string) {
   return cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-bold tracking-wide transition-colors select-none",
+    "inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition select-none active:scale-[0.98]",
     "disabled:opacity-40 disabled:pointer-events-none",
     VARIANT[variant],
     SIZE[size],
@@ -67,7 +67,7 @@ export function IconButton({
       type="button"
       aria-label={label}
       className={cn(
-        "grid size-10 shrink-0 place-items-center rounded-md text-ink transition-colors hover:bg-ink/8 disabled:opacity-30 disabled:pointer-events-none",
+        "grid size-10 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-black/8 disabled:opacity-30 disabled:pointer-events-none",
         className,
       )}
       {...rest}

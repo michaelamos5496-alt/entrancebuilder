@@ -7,35 +7,70 @@
   Everything else is our own choice and lives here so it can be replaced in one place.
 */
 @theme {
-  --font-sans: var(--font-roboto), system-ui, sans-serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 
-  --color-ink: #1b1f24;
-  --color-muted: #5b6471;
-  --color-line: #dde1e6;
+  --color-ink: #16181d;
+  --color-muted: #5a606b;
+  --color-line: rgb(22 24 29 / 0.1);
   --color-surface: #ffffff;
-  --color-canvas: #f3f4f6;
-  --color-slate: #454d59;
-  --color-slate-soft: #5a6472;
-  --color-mint: #9fd3c6;
-  --color-warm: #f2eeeb;
-  --color-stage: #efeff0;
-  --color-footer: #333333;
-  --color-brand: #a61e2a;
-  --color-brand-strong: #85161f;
-  --color-brand-soft: #fbeceb;
-  --color-focus: #1a56db;
+  --color-canvas: #f1f2f5;
+  --color-slate: #1d1f24;
+  --color-slate-soft: #3a3f48;
+  --color-mint: #dfe9ff;
+  --color-warm: #f4f1ec;
+  --color-stage: #eceef2;
+  --color-brand: #1d1f24;
+  --color-brand-strong: #000000;
+  --color-brand-soft: #eceef3;
+  --color-accent: #0a62d0;
+  --color-focus: #0a62d0;
   --color-success: #17794a;
   --color-danger: #b42318;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
 
-  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 8px 24px -8px rgb(16 24 40 / 0.14);
-  --shadow-pop: 0 12px 40px -8px rgb(16 24 40 / 0.35);
+  --shadow-card: 0 1px 1px rgb(16 24 40 / 0.04), 0 10px 30px -10px rgb(16 24 40 / 0.18);
+  --shadow-pop: 0 24px 60px -16px rgb(16 24 40 / 0.4);
+  --shadow-glass: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 2px rgb(16 24 40 / 0.05), 0 18px 48px -18px rgb(16 24 40 / 0.28);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --header-h: 64px;
+  --header-h: 76px;
+}
+
+/* Glass surfaces: translucent white that blurs and saturates whatever is behind it. Kept fairly opaque so text stays legible. */
+.glass {
+  background: rgb(255 255 255 / 0.72);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid rgb(255 255 255 / 0.65);
+  box-shadow: var(--shadow-glass);
+}
+.glass-strong {
+  background: rgb(255 255 255 / 0.84);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  box-shadow: var(--shadow-glass);
+}
+.glass-dark {
+  background: rgb(24 26 31 / 0.82);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: 0 18px 48px -18px rgb(0 0 0 / 0.55);
+  color: #fff;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: rgb(255 255 255 / 0.94); }
+  .glass-strong { background: rgb(255 255 255 / 0.97); }
+  .glass-dark { background: rgb(24 26 31 / 0.96); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass-strong { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass-dark { background: #1d1f24; -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 
 html {
@@ -55,7 +90,12 @@ html {
 }
 
 body {
-  background: var(--color-canvas);
+  background-color: #eef0f4;
+  background-image:
+    radial-gradient(60rem 38rem at 8% -6%, rgb(186 205 255 / 0.55), transparent 62%),
+    radial-gradient(52rem 34rem at 96% 4%, rgb(255 214 190 / 0.5), transparent 60%),
+    radial-gradient(60rem 40rem at 50% 108%, rgb(206 226 214 / 0.55), transparent 62%);
+  background-attachment: fixed;
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
