@@ -24,6 +24,8 @@ export const GALLERY: readonly GalleryPhoto[] = [
   photo("house-1", "White clapboard", "exterior"),
   photo("house-2", "Red brick", "exterior"),
   photo("house-3", "Yellow stucco", "exterior"),
+  photo("house-4", "Modern duplex", "exterior"),
+  photo("house-5", "White ranch", "exterior"),
   photo("room-1", "Living room", "interior"),
 ];
 

@@ -19,6 +19,8 @@ const galleryAssets: AssetEntry[] = [
   { id: "gallery.house-1", kind: "image", src: "/gallery/house-1.jpg", alt: "White clapboard house with a covered front door", license: CC0 },
   { id: "gallery.house-2", kind: "image", src: "/gallery/house-2.jpg", alt: "Red brick house with a panelled front door", license: CC0 },
   { id: "gallery.house-3", kind: "image", src: "/gallery/house-3.jpg", alt: "Yellow stucco house with a columned entrance", license: CC0 },
+  { id: "gallery.house-4", kind: "image", src: "/gallery/house-4.jpg", alt: "Modern stucco duplex with timber front doors", license: CC0 },
+  { id: "gallery.house-5", kind: "image", src: "/gallery/house-5.jpg", alt: "White single-storey house with a red front door", license: CC0 },
   { id: "gallery.room-1", kind: "image", src: "/gallery/room-1.jpg", alt: "Modern living room with a brick wall", license: CC0 },
 ];
 
