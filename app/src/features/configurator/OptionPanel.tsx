@@ -13,7 +13,9 @@ import { useConfigurator } from "./store";
 function GroupSection({ group }: { group: Group }) {
   const c = useConfigurator();
   const st = c.evaluation.groups[group.key];
-  const common = { group, selections: c.selections, evaluation: c.evaluation, onSelect: c.select, disabled: !st.available };
+  // A locked group with a fix stays usable: picking something in it makes the change it needs (e.g. adds a sidelite).
+  const locked = !st.available && !st.fix;
+  const common = { group, selections: c.selections, evaluation: c.evaluation, onSelect: c.select, disabled: locked };
   const current = group.kind === "toggle" ? undefined : labelOf(CATALOGUE, group.key, c.selections[group.key] as Value);
 
   return (
@@ -21,11 +23,17 @@ function GroupSection({ group }: { group: Group }) {
       {group.kind !== "toggle" && (
         <div className="mb-2.5 flex items-baseline justify-between gap-3">
           <h3 id={`g-${group.key}`} className="text-sm font-bold">{group.title}</h3>
-          {st.available && <span className="truncate text-xs text-muted">{current}</span>}
+          {(st.available || st.fix) && <span className="truncate text-xs text-muted">{current}</span>}
         </div>
       )}
       {group.hint && group.kind !== "toggle" && st.available && <p className="-mt-1 mb-2.5 text-xs text-muted">{group.hint}</p>}
-      {!st.available && group.kind !== "toggle" ? (
+      {!st.available && st.fix && group.kind !== "toggle" && (
+        <p className="mb-2.5 flex items-start gap-2 rounded-2xl bg-accent/10 px-3 py-2.5 text-xs text-ink">
+          <Icon name="info" size={16} className="mt-px shrink-0 text-accent" />
+          <span>Pick one and we&apos;ll do the rest. {st.fix}</span>
+        </p>
+      )}
+      {locked && group.kind !== "toggle" ? (
         <p className="flex items-start gap-2 rounded-md bg-canvas px-3 py-3 text-xs text-muted">
           <Icon name="info" size={16} className="mt-px shrink-0" />
           {st.reason}
@@ -80,10 +88,8 @@ function SearchResults({ query, onDone }: { query: string; onDone: () => void })
               type="button"
               className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left hover:bg-canvas"
               onClick={() => {
-                if (!st.available) {
-                  toast(st.reason ?? "Not available right now.", "info");
-                } else if (opt && !opt.available) {
-                  toast(opt.reason ?? "Not available right now.", "info");
+                if ((!st.available && !st.fix) || (opt && !opt.available && !opt.fix)) {
+                  toast((!st.available ? st.reason : opt?.reason) ?? "Not available right now.", "info");
                 } else {
                   c.select(h.group.key, h.value as never);
                 }

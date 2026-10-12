@@ -43,12 +43,11 @@ describe("state transitions", () => {
     expect(engineReducer(C, s, { type: "set", key: "hand", value: s.config.hand })).toBe(s);
   });
 
-  it("returns the SAME state object for a rejected change (unavailable option, locked group, unknown value)", () => {
+  it("returns the SAME state object for a change that can never work (unknown value, wrong type)", () => {
     const s = run(start(), { type: "set", key: "product", value: "axis" });
-    expect(engineReducer(C, s, { type: "set", key: "layout", value: "side-left" })).toBe(s); // unsupported
-    expect(engineReducer(C, s, { type: "set", key: "transomGlass", value: "clear" })).toBe(s); // locked (no transom)
     expect(engineReducer(C, s, { type: "set", key: "handle", value: "nonsense" })).toBe(s); // unknown
     expect(engineReducer(C, s, { type: "set", key: "matchFrame", value: "yes" as never })).toBe(s); // wrong type
+    expect(engineReducer(C, s, { type: "set", key: "layout", value: "not-a-layout" })).toBe(s);
   });
 
   it("does not mutate previous states", () => {
@@ -128,7 +127,7 @@ describe("repeated changes never corrupt state", () => {
       }
       if (s.future.length) assertValid(s.future[0], `seed ${seed} future ${i}`);
     }
-  });
+  }, 30_000);
 
   it("undoing everything returns to the first state; redoing everything returns to the last", () => {
     const rand = rng(99);

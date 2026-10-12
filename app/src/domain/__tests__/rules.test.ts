@@ -1,13 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { canSet, evaluate } from "@/domain/engine/evaluate";
 import { reconcile } from "@/domain/engine/reconcile";
+import { withFixHints } from "@/domain/engine/unlockRules";
 import { COLOR, FINISH } from "@/domain/catalogue/data";
 import { C, assertValid, cfg } from "./helpers";
 
 describe("product support", () => {
   it("options a product does not support are unavailable, with a reason naming the product", () => {
     const ev = evaluate(C, cfg("axis"));
-    expect(ev.options.layout!["side-left"]).toEqual({ available: false, reason: "Not available on Axis." });
+    expect(ev.options.layout!["side-left"]).toMatchObject({ available: false, reason: "Not available on Axis." });
+    expect(withFixHints(C, cfg("axis"), ev).options.layout!["side-left"].fix).toMatch(/Switches to \w+/); // still selectable: choosing it switches door
     expect(ev.options.layout!["single"].available).toBe(true);
     expect(ev.options.height!["std"].available).toBe(false);
     expect(ev.options.colorDoorExt![COLOR.red].available).toBe(false);

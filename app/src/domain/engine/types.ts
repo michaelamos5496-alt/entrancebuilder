@@ -56,6 +56,17 @@ export type Pred =
   | { any: readonly Pred[] }
   | { not: Pred };
 
+/**
+ * What to change so a locked group or a blocked option becomes usable. Selecting such an option applies it first,
+ * so no choice is ever a dead end. `note` is shown to the user ("Adds a sidelite to your layout.").
+ */
+export interface Unlock {
+  set?: Partial<Record<SelectionKey, string | boolean>>;
+  /** layout edits that keep what the user already has (e.g. keep the transom when adding a sidelite) */
+  layout?: "addSidelite" | "addTransom" | "single";
+  note: string;
+}
+
 export type Rule =
   | {
       id: string;
@@ -64,6 +75,7 @@ export type Rule =
       groups: readonly SelectionKey[];
       when: Pred;
       reason: string;
+      unlock?: Unlock;
     }
   | {
       id: string;
@@ -72,6 +84,7 @@ export type Rule =
       values: readonly string[];
       when: Pred;
       reason: string;
+      unlock?: Unlock;
     }
   | {
       id: string;
@@ -100,6 +113,8 @@ export interface Catalogue {
 export interface State {
   available: boolean;
   reason?: string;
+  /** set when the user can still pick this: choosing it makes the stated change first */
+  fix?: string;
 }
 
 export interface Evaluation {
@@ -116,7 +131,8 @@ export interface Change {
    * "reset": a value stopped being compatible and was replaced (tell the user).
    * "follow": a value was kept in sync by a `follow` rule (not worth a notice).
    * "repair": a stored/imported value was invalid and replaced while restoring.
+   * "adjust": changed on purpose so the option the user just picked works (tell the user).
    */
-  kind: "reset" | "follow" | "repair";
+  kind: "reset" | "follow" | "repair" | "adjust";
   reason: string;
 }

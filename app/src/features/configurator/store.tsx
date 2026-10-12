@@ -9,7 +9,9 @@ import { defaultPlacement, newHistory, placementReducer, type PlacementAction, t
 import type { Placement } from "@/domain/imaging/types";
 import { cutoutAspect } from "@/features/preview/SchematicDoor";
 import type { PhotoAsset } from "@/services/imaging/decodePhoto";
-import { evaluate, type Value } from "@/domain/engine/evaluate";
+import { canSet, evaluate, type Value } from "@/domain/engine/evaluate";
+import { planSet } from "@/domain/engine/unlock";
+import { withFixHints } from "@/domain/engine/unlockRules";
 import { engineReducer, initialEngineState, type EngineAction, type EngineState } from "@/domain/engine/reducer";
 import { decodeConfig, deserialize, serialize } from "@/domain/engine/serialize";
 import type { Change, Evaluation } from "@/domain/engine/types";
@@ -186,9 +188,15 @@ export function ConfiguratorProvider({ source, children }: { source: StartSource
   // Tell the user when a change reset something they had chosen.
   // One action = one notice listing EVERY change (separate notices would be capped and could hide some).
   useEffect(() => {
-    const list = eng.changes;
-    if (list.length === 0) return;
-    toast(list.length === 1 ? describeChange(list[0]) : `${list.length} choices were reset because they aren't available here:\n${list.map((c) => `• ${describeChange(c)}`).join("\n")}`, "info");
+    const adjusted = eng.changes.filter((c) => c.kind === "adjust");
+    const list = eng.changes.filter((c) => c.kind !== "adjust");
+    if (adjusted.length === 0 && list.length === 0) return;
+    const parts: string[] = [];
+    if (adjusted.length) parts.push([...new Set(adjusted.map((c) => c.reason))].join(" "));
+    if (list.length) {
+      parts.push(list.length === 1 ? describeChange(list[0]) : `${list.length} choices were reset because they aren't available here:\n${list.map((c) => `• ${describeChange(c)}`).join("\n")}`);
+    }
+    toast(parts.join("\n"), "info");
   }, [eng.changes, toast]);
 
   // Remember each photo's placement so switching photos back and forth never loses (or mixes up) placements.
@@ -200,12 +208,20 @@ export function ConfiguratorProvider({ source, children }: { source: StartSource
     });
   }, [scene.photos, scene.placements]);
 
+  const configRef = useRef(eng.config);
+  useEffect(() => { configRef.current = eng.config; }, [eng.config]);
   const select = useCallback<ConfiguratorApi["select"]>((key, value) => {
+    const cur = configRef.current;
+    // Anything restricted fixes what it needs first (see engine/unlock). Only a choice with no route at all is refused.
+    if (cur[key] !== value && !canSet(CATALOGUE, cur, key, value as Value).available && !planSet(CATALOGUE, cur, key, value as Value)) {
+      toast("That choice can't be combined with your current door. Try a different door model.", "info");
+      return;
+    }
     dispatchEngine({ type: "set", key, value: value as Value });
-  }, []);
+  }, [toast]);
 
   const setDoorMarkup = useCallback((markup: string) => dispatchScene({ type: "markup", markup }), []);
-  const evaluation = useMemo(() => evaluate(CATALOGUE, eng.config), [eng.config]);
+  const evaluation = useMemo(() => withFixHints(CATALOGUE, eng.config, evaluate(CATALOGUE, eng.config)), [eng.config]);
 
   const api = useMemo<ConfiguratorApi>(() => ({
     ...scene,

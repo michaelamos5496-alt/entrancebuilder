@@ -42,7 +42,7 @@ export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }
     <div role="radiogroup" aria-label={group.title} className="grid grid-cols-2 gap-3">
       {group.options?.map((o, i) => {
         const st = evaluation.options[group.key]?.[o.value] ?? { available: false };
-        const off = disabled || !st.available;
+        const off = disabled || (!st.available && !st.fix);
         const sel = value === o.value;
         return (
           <button
@@ -52,7 +52,7 @@ export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }
             role="radio"
             aria-checked={sel}
             aria-disabled={off || undefined}
-            title={!st.available ? st.reason : undefined}
+            title={!st.available ? (st.fix ?? st.reason) : undefined}
             onClick={() => { if (!off) onSelect(group.key, o.value as never); }}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
@@ -64,7 +64,7 @@ export function ChoiceGrid({ group, selections, evaluation, onSelect, disabled }
             {sel && <span aria-hidden className="absolute right-2.5 top-2.5 grid size-5 place-items-center rounded-full bg-accent text-white"><Icon name="check" size={12} /></span>}
             <OptionThumb group={group.key} value={o.value} />
             <span>{o.label}</span>
-            {!st.available && <span className="text-[10px] font-normal text-muted">{st.reason}</span>}
+            {!st.available && <span className="line-clamp-2 text-[10px] font-normal text-muted">{st.fix ?? st.reason}</span>}
           </button>
         );
       })}
@@ -87,17 +87,18 @@ export function SwatchGrid({ group, selections, evaluation, onSelect, disabled }
             type="button"
             role="radio"
             aria-checked={sel}
-            aria-label={st.available ? c.label : `${c.label} (unavailable)`}
-            aria-disabled={!st.available || undefined}
-            title={st.available ? c.label : `${c.label}: ${st.reason ?? "unavailable"}`}
+            aria-label={st.available ? c.label : `${c.label} (${st.fix ? "changes your door" : "unavailable"})`}
+            aria-disabled={(!st.available && !st.fix) || undefined}
+            title={st.available ? c.label : `${c.label}: ${st.fix ?? st.reason ?? "unavailable"}`}
             disabled={disabled}
-            onClick={() => { if (st.available) onSelect(group.key, c.value as never); }}
+            onClick={() => { if (st.available || st.fix) onSelect(group.key, c.value as never); }}
             onKeyDown={(e) => onKeyDown(e, i)}
             style={{ background: c.value }}
             className={cn(
               "relative aspect-square rounded-full shadow-[inset_0_0_0_1px_rgb(0_0_0/0.22)] transition hover:scale-110 disabled:opacity-40 disabled:hover:scale-100",
               sel && "ring-2 ring-ink ring-offset-2 ring-offset-surface",
-              !st.available && "cursor-not-allowed opacity-25 hover:scale-100",
+              !st.available && !st.fix && "cursor-not-allowed opacity-25 hover:scale-100",
+              !st.available && st.fix && "opacity-60 saturate-50",
             )}
           >
             {sel && (
@@ -149,20 +150,20 @@ export function GlassPicker({ group, selections, evaluation, onSelect, disabled 
                 type="button"
                 role="radio"
                 aria-checked={sel}
-                aria-disabled={!st.available || undefined}
-                title={st.available ? undefined : st.reason}
+                aria-disabled={(!st.available && !st.fix) || undefined}
+                title={st.available ? undefined : (st.fix ?? st.reason)}
                 disabled={disabled}
-                onClick={() => { if (st.available) onSelect(group.key, o.value as never); }}
+                onClick={() => { if (st.available || st.fix) onSelect(group.key, o.value as never); }}
                 onKeyDown={(e) => onKeyDown(e, i)}
                 className={cn(
                   "flex flex-col items-center gap-1.5 rounded-md border-2 px-2 pb-2.5 pt-2 text-center text-xs font-medium transition disabled:opacity-40",
                   sel ? "border-ink bg-surface text-ink shadow-card" : "border-transparent bg-canvas text-muted hover:border-line hover:text-ink",
-                  !st.available && "cursor-not-allowed opacity-40",
+                  !st.available && !st.fix && "cursor-not-allowed opacity-40",
                 )}
               >
                 <GlassThumb kind={o.value as never} />
                 <span>{o.label}</span>
-                {!st.available && <span className="text-[10px] font-normal text-muted">{st.reason}</span>}
+                {!st.available && <span className="line-clamp-2 text-[10px] font-normal text-muted">{st.fix ?? st.reason}</span>}
               </button>
             );
           })}

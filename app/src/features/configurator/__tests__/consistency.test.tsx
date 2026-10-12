@@ -85,18 +85,21 @@ describe("every component reflects the same active configuration", () => {
     expect(within(screen.getByTestId("summary")).queryByText("Frame · exterior")).toBeNull();
   });
 
-  it("unsupported options are disabled with a reason in the UI, and clicking them changes nothing", async () => {
+  it("options the door model lacks stay clickable, say what they will change, and switch the door when chosen", async () => {
     mount({ preset: "tall-black" }); // Axis
     await waitFor(() => expect(api.ready).toBe(true));
     await waitFor(() => expect(api.selections.product).toBe("axis"));
     go(0);
-    const left = radio("Configuration", /^Left sidelite\s*Not/);
-    expect(left.getAttribute("aria-disabled")).toBe("true");
-    expect(left.textContent).toMatch(/Not available on Axis/);
-    const before = api.selections;
+    const left = radio("Configuration", /^Left sidelite\s*Switches/);
+    expect(left.getAttribute("aria-disabled")).toBeNull();
+    expect(left.textContent).toMatch(/Switches to \w+/);
     fireEvent.click(left);
-    expect(api.selections).toBe(before);
-    expect(radio("Configuration", /Single door/).getAttribute("aria-checked")).toBe("true");
+    expect(api.selections.layout).toBe("side-left");
+    expect(api.selections.product).not.toBe("axis");
+    expect(radio("Configuration", /^Left sidelite(?! \+)/).getAttribute("aria-checked")).toBe("true");
+    act(() => api.undo()); // one step puts everything back
+    expect(api.selections.product).toBe("axis");
+    expect(api.selections.layout).toBe("single");
   });
 
   it("switching product shows what it will reset, then resets only that", async () => {
@@ -127,13 +130,16 @@ describe("every component reflects the same active configuration", () => {
     expect(summaryRow("Door model")).toBe("Solstice");
   });
 
-  it("locked groups explain why, and unlock when the layout allows", async () => {
+  it("locked groups stay usable: they say what choosing will do, and doing it unlocks them", async () => {
     mount();
     await waitFor(() => expect(api.ready).toBe(true));
     go(2);
-    expect(screen.getByText(/Choose a layout with a transom/)).toBeTruthy();
-    act(() => api.select("layout", "transom"));
-    expect(screen.queryByText(/Choose a layout with a transom/)).toBeNull();
+    expect(screen.getAllByText(/Pick one and we.ll do the rest/).length).toBeGreaterThanOrEqual(2); // sidelite + transom glazing
+    fireEvent.click(radio("Transom glazing", /Clear/));
+    expect(api.selections.layout).toBe("transom");
+    expect(api.selections.transomGlass).toBe("clear");
+    expect(screen.queryByText(/Pick one and we.ll do the rest. Adds a transom/)).toBeNull(); // unlocked: that hint is gone
+    expect(screen.getByText(/Adds a transom to your layout/)).toBeTruthy(); // and we were told what changed
   });
 
   it("repeated clicking keeps the UI and state in agreement", async () => {

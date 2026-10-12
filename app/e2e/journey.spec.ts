@@ -17,10 +17,16 @@ test.describe("main user journey", () => {
     await expect(page.getByTestId("active-product")).toContainText("Axis");
     await expect(page.getByRole("status").filter({ hasText: /choices were reset/ })).toContainText("Configuration: Left sidelite → Single door"); // told about EVERY reset
     await goToStep(page, "Layout");
-    const left = page.getByRole("radiogroup", { name: "Configuration" }).getByRole("radio", { name: /^Left sidelite\s*Not available/ });
-    await expect(left).toHaveAttribute("aria-disabled", "true");
-    await left.click({ force: true });
-    await expect(page.getByRole("radio", { name: /^Single door/ })).toHaveAttribute("aria-checked", "true"); // unchanged
+    // Axis has no sidelites, but the option is not greyed out: choosing it switches the door and says so.
+    const left = page.getByRole("radiogroup", { name: "Configuration" }).getByRole("radio", { name: /^Left sidelite\s*Switches/ });
+    await expect(left).not.toHaveAttribute("aria-disabled", "true");
+    await left.click();
+    await expect(page.getByTestId("active-product")).not.toContainText("Axis");
+    await expect(page.getByRole("radio", { name: /^Left sidelite(?! \+)/ })).toHaveAttribute("aria-checked", "true");
+    await expect(page.getByRole("status").filter({ hasText: /Switches to the/ })).toBeVisible();
+    await goToStep(page, "Door"); // back to Axis for the rest of the journey
+    await page.getByRole("radio", { name: /Axis/ }).click();
+    await expect(page.getByTestId("active-product")).toContainText("Axis");
     await goToStep(page, "Colors");
     await page.getByRole("radiogroup", { name: "Door · exterior" }).getByRole("radio", { name: "Gray" }).click();
 

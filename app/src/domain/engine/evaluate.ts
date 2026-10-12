@@ -40,7 +40,7 @@ export function evaluate(c: Catalogue, cfg: Selections): Evaluation {
 
   for (const r of c.rules) {
     if (r.kind === "groupLockedWhen" && evalPred(r.when, cfg)) {
-      for (const k of r.groups) if (groups[k].available) groups[k] = { available: false, reason: r.reason };
+      for (const k of r.groups) if (groups[k].available) groups[k] = { available: false, reason: r.reason, fix: r.unlock?.note };
     }
   }
 
@@ -62,7 +62,7 @@ export function evaluate(c: Catalogue, cfg: Selections): Evaluation {
     if (r.kind === "optionBlockedWhen" && evalPred(r.when, cfg)) {
       const states = options[r.group];
       if (!states) continue;
-      for (const v of r.values) if (states[v]?.available) states[v] = { available: false, reason: r.reason };
+      for (const v of r.values) if (states[v]?.available) states[v] = { available: false, reason: r.reason, fix: r.unlock?.note };
     }
   }
   return { groups, options };

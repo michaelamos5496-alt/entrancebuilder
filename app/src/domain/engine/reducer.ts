@@ -1,6 +1,7 @@
 import type { SelectionKey, Selections } from "@/domain/design/types";
 import { canSet, type Value } from "./evaluate";
 import { createConfig, reconcile } from "./reconcile";
+import { planSet } from "./unlock";
 import type { Catalogue, Change } from "./types";
 
 export const HISTORY_LIMIT = 100;
@@ -42,7 +43,18 @@ export function engineReducer(c: Catalogue, state: EngineState, action: EngineAc
   switch (action.type) {
     case "set": {
       if (state.config[action.key] === action.value) return state;
-      if (!canSet(c, state.config, action.key, action.value).available) return state;
+      if (!canSet(c, state.config, action.key, action.value).available) {
+        // Not selectable as things stand: make whatever it needs happen first (add a sidelite, switch model...), or refuse.
+        const plan = planSet(c, state.config, action.key, action.value);
+        if (!plan || same(plan.config, state.config)) return state;
+        const adjusted = new Set(plan.adjustments.map((a) => a.key));
+        return {
+          config: plan.config,
+          past: pushHistory(state.past, state.config),
+          future: [],
+          changes: [...plan.adjustments, ...plan.resets.filter((ch) => ch.key !== action.key && !adjusted.has(ch.key))],
+        };
+      }
       const { config, changes } = reconcile(c, { ...state.config, [action.key]: action.value });
       if (same(config, state.config)) return state;
       return {

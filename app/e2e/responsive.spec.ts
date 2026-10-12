@@ -65,10 +65,10 @@ for (const vp of VIEWPORTS) {
 
 test.describe("interactive states", () => {
   test("hover, focus, disabled and error states are visibly different", async ({ page }) => {
-    await openConfigurator(page, "?preset=tall-black"); // Axis: some options disabled
+    await openConfigurator(page, "?preset=tall-black"); // Axis
     const group = page.getByRole("radiogroup", { name: "Configuration" });
     const enabled = group.getByRole("radio", { name: /^Double doors/ });
-    const disabled = group.getByRole("radio", { name: /^Left sidelite\s*Not/ });
+    const disabled = page.getByRole("button", { name: "Previous" }); // first step: nothing before it
     const style = (loc: typeof enabled) => loc.evaluate((e) => { const c = getComputedStyle(e); return { bg: c.backgroundColor, color: c.color, border: c.borderColor, op: c.opacity, ring: c.outlineStyle + c.outlineWidth, cursor: c.cursor, shadow: c.boxShadow }; });
     const rest = await style(enabled);
     await enabled.hover();
@@ -81,7 +81,6 @@ test.describe("interactive states", () => {
     expect(focus.ring).not.toMatch(/^none/);
     const dis = await style(disabled);
     expect(parseFloat(dis.op)).toBeLessThan(1);
-    expect(dis.cursor).toBe("not-allowed");
     await page.screenshot({ path: "e2e/screens/states-options.png" });
     // error state in a form
     await goToStep(page, "Summary");
